@@ -4,6 +4,8 @@
 
 Предназначен для генерации учётных записей для курса **«Английский для лиц с нарушениями зрения»**.
 
+**Версия:** 1.1.0 (с конфигурацией)
+
 ---
 
 ## Требования
@@ -21,9 +23,12 @@
 Убедитесь, что файлы проекта находятся в одной директории:
 ```
 kk-userator/
-├── keycloak_user_generator.py
-├── requirements.txt
-└── README.md
+├── keycloak_user_generator.py    # Основной скрипт
+├── config.py                     # Модуль конфигурации
+├── config.yaml                   # Файл настроек
+├── .env.example                  # Пример переменных окружения
+├── requirements.txt              # Зависимости Python
+└── README.md                     # Этот файл
 ```
 
 ### 2. Установка зависимостей
@@ -34,8 +39,87 @@ pip install -r requirements.txt
 
 Или вручную:
 ```bash
-pip install python-keycloak pandas python-dotenv
+pip install python-keycloak python-dotenv PyYAML
 ```
+
+---
+
+## Конфигурация
+
+### Файл config.yaml
+
+Все параметры вынесены в файл `config.yaml`. Это позволяет запускать скрипт для разных курсов без изменения кода.
+
+```yaml
+# Параметры пользователей
+user:
+  login_prefix: "enginc"           # Префикс для логинов
+  email_domain: "urfu.online"      # Домен для email
+  first_name: "Студент"            # Имя по умолчанию
+  last_name_template: "Студентов {number}"  # Шаблон фамилии
+  group_name: "engforinclusb-users"  # Группа в Keycloak
+  default_realm: "master"          # Realm по умолчанию
+
+# Параметры генерации паролей
+password:
+  length: 8                        # Длина пароля
+  use_lowercase: true              # Строчные буквы
+  use_uppercase: true              # Заглавные буквы
+  use_digits: true                 # Цифры
+  use_special: false               # Спецсимволы
+
+# Параметры по умолчанию
+defaults:
+  count: 200                       # Количество пользователей
+  start_number: 1                  # Начальный номер
+  output_dir: "output"             # Директория для файлов
+
+# Логирование
+logging:
+  file: "keycloak_generator.log"
+  level: "INFO"
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+  date_format: "%Y-%m-%d %H:%M:%S"
+```
+
+### Переменные окружения
+
+Некоторые параметры можно переопределить через переменные окружения:
+
+| Переменная | Описание | Пример |
+|------------|----------|--------|
+| `KEYCLOAK_URL` | URL сервера Keycloak | `https://keycloak.urfu.online` |
+| `KEYCLOAK_USERNAME` | Логин администратора | `admin` |
+| `KEYCLOAK_PASSWORD` | Пароль администратора | `secret` |
+| `KEYCLOAK_REALM` | Имя realm | `master` |
+| `KEYCLOAK_CONFIG` | Путь к config.yaml | `config.yaml` |
+| `KEYCLOAK_LOGIN_PREFIX` | Префикс для логинов | `enginc` |
+| `KEYCLOAK_EMAIL_DOMAIN` | Домен для email | `urfu.online` |
+| `KEYCLOAK_COUNT` | Количество пользователей | `200` |
+| `KEYCLOAK_OUTPUT_DIR` | Директория для файлов | `output` |
+
+### Быстрая настройка для другого курса
+
+1. Скопируйте `.env.example` в `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Отредактируйте `.env`:
+   ```bash
+   KEYCLOAK_URL=https://keycloak.example.com
+   KEYCLOAK_USERNAME=admin
+   KEYCLOAK_PASSWORD=your_password
+   ```
+
+3. Отредактируйте `config.yaml` под ваш курс:
+   ```yaml
+   user:
+     login_prefix: "mycourse"
+     email_domain: "example.com"
+     first_name: "Имя"
+     last_name_template: "Фамилия {number}"
+   ```
 
 ---
 
@@ -61,11 +145,18 @@ python keycloak_user_generator.py
 
 | Параметр | Краткий | Описание | По умолчанию |
 |----------|---------|----------|--------------|
-| `--count` | `-n` | Количество пользователей | 200 |
-| `--start` | `-s` | Начальный номер нумерации | 1 |
+| `--count` | `-n` | Количество пользователей | из config.yaml (200) |
+| `--start` | `-s` | Начальный номер нумерации | из config.yaml (1) |
 | `--dry-run` | — | Режим проверки без создания | выключен |
-| `--output-dir` | `-o` | Директория для файлов | `output` |
+| `--output-dir` | `-o` | Директория для файлов | из config.yaml (`output`) |
 | `--no-interactive` | — | Использовать переменные окружения | выключен |
+| `--config` | — | Путь к файлу конфигурации | `config.yaml` |
+
+Приоритет параметров (от высшего к низшему):
+1. Аргументы командной строки
+2. Переменные окружения
+3. Файл `config.yaml`
+4. Встроенные значения по умолчанию
 
 ---
 
@@ -93,6 +184,19 @@ export KEYCLOAK_USERNAME=admin
 export KEYCLOAK_PASSWORD=your_password
 export KEYCLOAK_REALM=master
 
+python keycloak_user_generator.py --no-interactive
+```
+
+#### Использование альтернативной конфигурации
+```bash
+python keycloak_user_generator.py --config configs/another_course.yaml
+```
+
+#### Переопределение параметров конфигурации
+```bash
+# Временное изменение префикса и домена
+export KEYCLOAK_LOGIN_PREFIX=mycourse
+export KEYCLOAK_EMAIL_DOMAIN=example.com
 python keycloak_user_generator.py --no-interactive
 ```
 
@@ -158,6 +262,22 @@ enginc_2,X3m9Kp2q,enginc_2@urfu.online,Студент,Студентов 2,True
   Статус:  Активен
 ----------------------------------------
 ```
+
+---
+
+## Валидация конфигурации
+
+Скрипт автоматически проверяет корректность параметров:
+
+| Параметр | Проверка |
+|----------|----------|
+| `login_prefix` | Только латиница, цифры, подчёркивание; начинается с буквы; макс. 32 символа |
+| `email_domain` | Не пустой; содержит точку; допустимые символы |
+| `password.length` | От 6 до 128 символов |
+| `last_name_template` | Должен содержать `{number}` |
+| `group_name` | Не пустой; макс. 64 символа |
+
+При ошибке валидации скрипт завершится с описанием проблемы.
 
 ---
 
@@ -232,6 +352,9 @@ rm -rf output/
 ```
 kk-userator/
 ├── keycloak_user_generator.py    # Основной скрипт
+├── config.py                     # Модуль конфигурации и валидации
+├── config.yaml                   # Файл настроек (параметры пользователей, паролей, логирования)
+├── .env.example                  # Пример переменных окружения
 ├── requirements.txt              # Зависимости Python
 ├── README.md                     # Этот файл
 ├── output/                       # Директория с учётными данными (создаётся при запуске)
@@ -271,5 +394,12 @@ kk-userator/
 
 ---
 
-*Версия: 1.0.0*
-*Дата: 2026-03-18*
+*Версия: 1.1.0*
+*Дата: 2026-03-22*
+
+## Changelog
+
+| Версия | Дата | Изменения |
+|--------|------|-----------|
+| 1.1.0 | 2026-03-22 | Вынесена конфигурация в config.yaml, добавлена валидация параметров, декомпозиция main() |
+| 1.0.0 | 2026-03-18 | Базовая версия: генерация 200 пользователей, экспорт CSV/TXT/JSON |

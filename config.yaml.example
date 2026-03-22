@@ -1,0 +1,50 @@
+# Пример конфигурации генератора пользователей Keycloak
+# Скопируйте этот файл в config.yaml и отредактируйте параметры
+
+# Параметры пользователей
+user:
+  # Префикс для логинов (только латиница, цифры, подчёркивание)
+  login_prefix: "enginc"
+  # Домен для email
+  email_domain: "urfu.online"
+  # Имя по умолчанию
+  first_name: "Студент"
+  # Шаблон фамилии (использует {number} для номера)
+  last_name_template: "Студентов {number}"
+  # Название группы в Keycloak
+  group_name: "engforinclusb-users"
+  # Realm по умолчанию
+  default_realm: "master"
+
+# Параметры генерации паролей
+password:
+  # Длина пароля
+  length: 8
+  # Включать строчные буквы
+  use_lowercase: true
+  # Включать заглавные буквы
+  use_uppercase: true
+  # Включать цифры
+  use_digits: true
+  # Включать специальные символы (опционально)
+  use_special: false
+
+# Параметры по умолчанию
+defaults:
+  # Количество пользователей для создания
+  count: 200
+  # Начальный номер
+  start_number: 1
+  # Директория для выходных файлов
+  output_dir: "output"
+
+# Логирование
+logging:
+  # Файл лога
+  file: "keycloak_generator.log"
+  # Уровень логирования (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  level: "INFO"
+  # Формат сообщения
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+  # Формат даты
+  date_format: "%Y-%m-%d %H:%M:%S"

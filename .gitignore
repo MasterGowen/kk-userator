@@ -37,6 +37,9 @@ ENV/
 .env
 .env.local
 
+# Конфигурация по умолчанию (игнорируем, чтобы пользователь создал свой)
+config.yaml
+
 # Credentials and secrets
 *.pem
 *.key
