@@ -15,6 +15,7 @@ import os
 import sys
 import argparse
 from typing import Dict, Optional
+from dotenv import load_dotenv
 
 from keycloak_userator.config import Config, load_config, ConfigValidationError
 from keycloak_userator.keycloak_client import KeycloakUserGenerator
@@ -259,6 +260,9 @@ def main() -> int:
     Returns:
         Код выхода (0 — успех, 1 — ошибка)
     """
+    # Загрузка .env файла (если существует)
+    load_dotenv()
+
     parser = create_argument_parser()
     args = parser.parse_args()
 

@@ -88,7 +88,7 @@ logging:
 
 | Переменная | Описание | Пример |
 |------------|----------|--------|
-| `KEYCLOAK_URL` | URL сервера Keycloak | `https://keycloak.urfu.online` |
+| `KEYCLOAK_URL` | URL сервера Keycloak | `https://openedu.urfu.ru/auth` |
 | `KEYCLOAK_USERNAME` | Логин администратора | `admin` |
 | `KEYCLOAK_PASSWORD` | Пароль администратора | `secret` |
 | `KEYCLOAK_REALM` | Имя realm | `master` |
@@ -107,7 +107,7 @@ logging:
 
 2. Отредактируйте `.env`:
    ```bash
-   KEYCLOAK_URL=https://keycloak.example.com
+   KEYCLOAK_URL=https://openedu.urfu.ru/auth
    KEYCLOAK_USERNAME=admin
    KEYCLOAK_PASSWORD=your_password
    ```
