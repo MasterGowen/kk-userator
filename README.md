@@ -1,16 +1,18 @@
 # Keycloak User Generator
 
-Скрипт для массового создания пользователей в Keycloak через Admin API.
+Пакет для массового создания пользователей в Keycloak через Admin API.
 
 Предназначен для генерации учётных записей для курса **«Английский для лиц с нарушениями зрения»**.
 
-**Версия:** 1.1.0 (с конфигурацией)
+**Версия:** 2.0.0 (рефакторинг в пакет)
+
+**Статус:** ✅ Готов к использованию
 
 ---
 
 ## Требования
 
-- Python 3.8 или выше
+- Python 3.12 или выше
 - Доступ к Keycloak Admin API
 - Учётная запись администратора Keycloak с правами на создание пользователей
 
@@ -20,26 +22,44 @@
 
 ### 1. Клонирование или загрузка
 
-Убедитесь, что файлы проекта находятся в одной директории:
-```
-kk-userator/
-├── keycloak_user_generator.py    # Основной скрипт
-├── config.py                     # Модуль конфигурации
-├── config.yaml                   # Файл настроек
-├── .env.example                  # Пример переменных окружения
-├── requirements.txt              # Зависимости Python
-└── README.md                     # Этот файл
+```bash
+git clone <repository-url>
+cd kk-userator
 ```
 
-### 2. Установка зависимостей
+### 2. Создание виртуального окружения (рекомендуется)
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+# или
+.venv\Scripts\activate  # Windows
+```
+
+### 3. Установка зависимостей
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Или вручную:
+**Зависимости:**
+- `python-keycloak` ≥3.0.0 — Keycloak Admin API
+- `python-dotenv` ≥1.0.0 — Загрузка .env файлов
+- `PyYAML` ≥6.0 — YAML конфигурация
+- `pytest` ≥7.0 — Тестирование (включено в requirements.txt)
+
+### 4. Настройка .env
+
 ```bash
-pip install python-keycloak python-dotenv PyYAML
+cp .env.example .env
+```
+
+Отредактируйте `.env`:
+```bash
+KEYCLOAK_URL=https://keycloak.urfu.online
+KEYCLOAK_USERNAME=admin
+KEYCLOAK_PASSWORD=your_password_here
+KEYCLOAK_REALM=master
 ```
 
 ---
@@ -394,12 +414,13 @@ kk-userator/
 
 ---
 
-*Версия: 1.1.0*
-*Дата: 2026-03-22*
+*Версия: 2.0.0*
+*Дата: 2026-03-28*
 
 ## Changelog
 
 | Версия | Дата | Изменения |
 |--------|------|-----------|
+| **2.0.0** | 2026-03-28 | **Рефакторинг в пакет**: модульная структура (cli, config, types, password, exporter, keycloak_client), 145 тестов (покрытие 93%+), .env поддержка (load_dotenv), ruff/mypy/bandit проверки |
 | 1.1.0 | 2026-03-22 | Вынесена конфигурация в config.yaml, добавлена валидация параметров, декомпозиция main() |
 | 1.0.0 | 2026-03-18 | Базовая версия: генерация 200 пользователей, экспорт CSV/TXT/JSON |
