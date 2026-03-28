@@ -33,12 +33,13 @@ ENV/
 *.swo
 *~
 
+# Конфигурация (игнорируем, чтобы пользователь создал свой)
+config.yaml
+config.yaml.local
+
 # Environment variables
 .env
 .env.local
-
-# Конфигурация по умолчанию (игнорируем, чтобы пользователь создал свой)
-config.yaml
 
 # Credentials and secrets
 *.pem
@@ -76,4 +77,30 @@ docs/audit-report.md
 docs/architecture.md
 .*cache
 
-AGENTS.md
+# Build artifacts
+*.egg-info/
+.installed.cfg
+build/
+dist/
+.eggs/
+
+# Coverage
+.coverage
+htmlcov/
+.coverage.*
+
+# mypy
+.mypy_cache/
+
+# ruff
+.ruff_cache/
+
+# pytest
+.pytest_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
