@@ -15,6 +15,7 @@ import os
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
 try:
     import yaml
@@ -273,7 +274,7 @@ class ConfigLoader:
         self._validate_config(config)
         return config
 
-    def _load_yaml(self) -> dict:
+    def _load_yaml(self) -> dict[str, Any]:
         """
         Загрузка YAML-файла.
 
@@ -292,7 +293,7 @@ class ConfigLoader:
             data = yaml.safe_load(f)
             return data if data else {}
 
-    def _parse_config(self, data: dict) -> Config:
+    def _parse_config(self, data: dict[str, Any]) -> Config:
         """
         Парсинг данных конфигурации.
 

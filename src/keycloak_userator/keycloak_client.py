@@ -181,7 +181,7 @@ class KeycloakUserGenerator:
 
     # =================================================================
 
-    def generate_users(self, count: int, start_number: int) -> list[dict]:
+    def generate_users(self, count: int, start_number: int) -> list[dict[str, Any]]:
         """Генерация пользователей."""
         # Обновление статистики для обратной совместимости
         users = self._user_service.generate_users(count, start_number)

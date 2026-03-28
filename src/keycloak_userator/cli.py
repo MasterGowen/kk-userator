@@ -13,6 +13,7 @@ cli.py
 import argparse
 import os
 import sys
+from typing import Any
 
 from dotenv import load_dotenv
 
@@ -175,11 +176,7 @@ def load_application_config(args: argparse.Namespace) -> Config:
     """
     try:
         config_path = args.config or os.environ.get('KEYCLOAK_CONFIG')
-
-        if config_path:
-            config = load_config(config_path)
-        else:
-            config = load_config()
+        config = load_config(config_path) if config_path else load_config()
 
         if args.count is not None:
             config.defaults.count = args.count
@@ -209,7 +206,7 @@ def print_header() -> None:
     print("=" * 60 + "\n")
 
 
-def export_credentials(users: list, output_dir: str) -> None:
+def export_credentials(users: list[dict[str, Any]], output_dir: str) -> None:
     """
     Экспорт учётных данных в файлы.
 
