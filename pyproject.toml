@@ -50,11 +50,11 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/kk-userator/kk-userator"
-Documentation = "https://github.com/kk-userator/kk-userator/tree/main/docs"
-Repository = "https://github.com/kk-userator/kk-userator.git"
-Issues = "https://github.com/kk-userator/kk-userator/issues"
-Changelog = "https://github.com/kk-userator/kk-userator/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/mastergowen/kk-userator"
+Documentation = "https://github.com/mastergowen/kk-userator/tree/main/docs"
+Repository = "https://github.com/mastergowen/kk-userator.git"
+Issues = "https://github.com/mastergowen/kk-userator/issues"
+Changelog = "https://github.com/mastergowen/kk-userator/blob/main/CHANGELOG.md"
 
 [project.scripts]
 kk-userator = "keycloak_userator.cli:main"
