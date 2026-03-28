@@ -43,9 +43,6 @@
 ### Быстрый старт
 
 ```bash
-# Установка зависимостей
-pip install -r requirements.txt
-
 # Создание виртуального окружения (рекомендуется)
 python -m venv .venv
 source .venv/bin/activate  # Linux/macOS
@@ -158,7 +155,7 @@ kk-userator/
 ├── config.yaml.example           # Пример конфигурации
 ├── .env                          # Переменные окружения (игнорируется git)
 ├── .env.example                  # Пример переменных окружения
-├── requirements.txt              # Python-зависимости
+├── pyproject.toml                # Python-зависимости и конфигурация
 ├── README.md                     # Пользовательская документация
 ├── QWEN.md                       # Этот файл — контекст проекта
 ├── AGENTS.md                     # Промпты субагентов
@@ -211,7 +208,7 @@ kk-userator/
 ### Установка зависимостей
 
 ```bash
-pip install -r requirements.txt
+pip install -e .
 ```
 
 ### Запуск тестов
@@ -347,7 +344,7 @@ output/
 | `KeycloakError: 401 Unauthorized` | Неверные учётные данные | Проверить логин/пароль администратора |
 | `KeycloakError: 403 Forbidden` | Недостаточно прав | Требуется роль `realm-admin` |
 | `ConnectionError` | Keycloak недоступен | Проверить сетевое подключение |
-| `ImportError: python-keycloak` | Не установлены зависимости | `pip install -r requirements.txt` |
+| `ImportError: python-keycloak` | Не установлены зависимости | `pip install -e .` |
 
 ---
 

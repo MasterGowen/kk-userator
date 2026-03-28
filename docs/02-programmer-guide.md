@@ -34,7 +34,6 @@ kk-userator/
 │   ├── test_exporter.py
 │   └── test_keycloak_client.py
 ├── docs/                    # Документация
-├── requirements.txt         # Зависимости
 └── README.md               # Основная документация
 ```
 
@@ -60,11 +59,11 @@ source .venv/bin/activate  # Linux/macOS
 ### 3.3. Установка зависимостей
 
 ```bash
-# Основные зависимости
-pip install -r requirements.txt
+# Установка как пакета
+pip install -e .
 
 # Для разработки (опционально)
-pip install ruff mypy
+pip install -e ".[dev]"
 ```
 
 ### 3.4. Настройка окружения

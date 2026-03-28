@@ -53,11 +53,8 @@ python -m venv .venv
 source .venv/bin/activate  # Linux/macOS
 .venv\Scripts\activate     # Windows
 
-# Установка зависимостей
-pip install -r requirements.txt
-
-# Или установка как пакета
-pip install .
+# Установка как пакета
+pip install -e .
 ```
 
 ### Вариант 3: Режим разработки
@@ -308,7 +305,6 @@ kk-userator/
 ├── tests/                   # Тесты
 ├── docs/                    # Документация
 ├── pyproject.toml           # Конфигурация сборки
-├── requirements.txt         # Зависимости
 ├── README.md                # Этот файл
 └── CHANGELOG.md             # История версий
 ```

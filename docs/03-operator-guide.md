@@ -29,7 +29,7 @@ source .venv/bin/activate  # Linux/macOS
 .venv\Scripts\activate     # Windows
 
 # Установка зависимостей
-pip install -r requirements.txt
+pip install -e .
 ```
 
 ### 2.2. Настройка

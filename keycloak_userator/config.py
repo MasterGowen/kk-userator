@@ -20,7 +20,7 @@ try:
     import yaml
 except ImportError:
     print("Ошибка: не установлена библиотека PyYAML")
-    print("Установите зависимости: pip install -r requirements.txt")
+    print("Установите зависимости: pip install -e .")
     raise
 
 

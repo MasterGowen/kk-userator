@@ -302,7 +302,7 @@ enginc_2,X3mN9qR2,enginc_2@urfu.online,Студент,Студентов 2,True
 | `KeycloakError: 403 Forbidden` | Недостаточно прав | Требуется роль `realm-management` |
 | `ConnectionError` | Keycloak недоступен | Проверить сетевое подключение |
 | `ValidationError` | Ошибка валидации конфигурации | Проверить config.yaml |
-| `ImportError: python-keycloak` | Не установлены зависимости | `pip install -r requirements.txt` |
+| `ImportError: python-keycloak` | Не установлены зависимости | `pip install -e .` |
 
 ### 7.2. Стратегии обработки
 
