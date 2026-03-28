@@ -60,7 +60,7 @@ Changelog = "https://github.com/mastergowen/kk-userator/blob/main/CHANGELOG.md"
 kk-userator = "keycloak_userator.cli:main"
 
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["src"]
 include = ["keycloak_userator*"]
 
 [tool.setuptools.package-data]
@@ -68,6 +68,7 @@ keycloak_userator = ["py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]

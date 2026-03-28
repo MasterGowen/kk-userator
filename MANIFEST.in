@@ -1,0 +1,20 @@
+# MANIFEST.in — дополнительные файлы для включения в пакет
+# См: https://setuptools.pypa.io/en/latest/userguide/datafiles.html
+
+# Включить py.typed для типизации
+recursive-include src/keycloak_userator py.typed
+
+# Включить README и LICENSE
+include README.md
+include LICENSE
+
+# Включить файлы документации (опционально)
+recursive-include docs *.md
+
+# Исключить тесты из пакета (они в отдельной директории)
+prune __pycache__
+prune .pytest_cache
+prune .mypy_cache
+prune .ruff_cache
+prune htmlcov
+prune .venv

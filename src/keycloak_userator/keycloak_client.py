@@ -15,9 +15,8 @@ from typing import Any
 from keycloak import KeycloakAdmin
 
 from keycloak_userator.config import Config
-from keycloak_userator.password import PasswordGenerator
 from keycloak_userator.providers import ConcreteKeycloakProvider
-from keycloak_userator.services import UserService, UserData
+from keycloak_userator.services import UserService
 
 
 class KeycloakUserGenerator:
@@ -96,7 +95,7 @@ class KeycloakUserGenerator:
         try:
             result = self._provider.connect()
             # Для обратной совместимости сохраняем доступ к KeycloakAdmin
-            self.keycloak_admin = self._provider._admin  # type: ignore[assignment]
+            self.keycloak_admin = self._provider._admin
             return result
         except Exception as e:
             self.logger.error(f"Ошибка подключения к Keycloak: {e}")

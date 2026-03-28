@@ -11,9 +11,9 @@ from keycloak import KeycloakAdmin
 from keycloak.exceptions import KeycloakError, KeycloakGetError, KeycloakPostError
 
 from keycloak_userator.exceptions import (
-    ConnectionError,
     AuthenticationError,
     AuthorizationError,
+    ConnectionError,
     GroupOperationError,
     UserCreationError,
 )
