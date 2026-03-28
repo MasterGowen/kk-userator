@@ -71,5 +71,8 @@ temp/
 *.tmp
 .venv/
 meta/
+reviews/
+docs/audit-report.md
+docs/architecture.md
 .*cache
 
