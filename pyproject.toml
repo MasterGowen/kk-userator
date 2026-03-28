@@ -9,7 +9,7 @@ description = "Массовое создание пользователей в K
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "kk-userator team", email = "dev@urfu.online"}
+    {name = "UrFU.online team", email = "mastergowen@gmail.com"}
 ]
 keywords = [
     "keycloak",
