@@ -8,13 +8,11 @@ recursive-include src/keycloak_userator py.typed
 include README.md
 include LICENSE
 
-# Включить файлы документации (опционально)
+# Включить документацию для разработчиков (кроме внутренних аудитов)
 recursive-include docs *.md
+exclude docs/deviation-audit-*.md
+exclude docs/audit-review-*.md
+exclude docs/audit-report.*
 
-# Исключить тесты из пакета (они в отдельной директории)
-prune __pycache__
-prune .pytest_cache
-prune .mypy_cache
-prune .ruff_cache
-prune htmlcov
-prune .venv
+# Тесты включаются автоматически (стандарт для Python-пакетов)
+# Исходники в src/ включаются автоматически через pyproject.toml
