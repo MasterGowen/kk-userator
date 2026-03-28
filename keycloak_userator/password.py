@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 password.py
 
@@ -13,7 +12,6 @@ password.py
 
 import secrets
 import string
-from typing import List
 
 from keycloak_userator.config import Config
 
@@ -74,7 +72,7 @@ class PasswordGenerator:
         # Используем secrets для криптографически безопасной генерации
         return ''.join(secrets.choice(self.chars) for _ in range(self.length))
 
-    def generate_batch(self, count: int) -> List[str]:
+    def generate_batch(self, count: int) -> list[str]:
         """
         Генерация нескольких паролей.
 

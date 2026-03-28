@@ -8,6 +8,8 @@
 
 **Статус:** ✅ Готов к использованию
 
+**Лицензия:** MIT
+
 ---
 
 ## Требования
@@ -20,33 +22,54 @@
 
 ## Установка
 
-### 1. Клонирование или загрузка
+### Вариант 1: Установка из PyPI (рекомендуется)
 
 ```bash
+pip install kk-userator
+```
+
+### Вариант 2: Установка из исходников
+
+```bash
+# Клонирование репозитория
 git clone <repository-url>
 cd kk-userator
-```
 
-### 2. Создание виртуального окружения (рекомендуется)
-
-```bash
+# Создание виртуального окружения
 python -m venv .venv
 source .venv/bin/activate  # Linux/macOS
-# или
-.venv\Scripts\activate  # Windows
+.venv\Scripts\activate     # Windows
+
+# Установка
+pip install -r requirements.txt
+
+# Или установка как пакета
+pip install .
 ```
 
-### 3. Установка зависимостей
+### Вариант 3: Режим разработки
 
 ```bash
-pip install -r requirements.txt
+# Установка с dev-зависимостями
+pip install -e ".[dev]"
+
+# Запуск тестов
+pytest
+
+# Линтинг
+ruff check keycloak_userator/
+
+# Проверка типов
+mypy keycloak_userator/
 ```
 
 **Зависимости:**
 - `python-keycloak` ≥3.0.0 — Keycloak Admin API
 - `python-dotenv` ≥1.0.0 — Загрузка .env файлов
 - `PyYAML` ≥6.0 — YAML конфигурация
-- `pytest` ≥7.0 — Тестирование (включено в requirements.txt)
+- `pytest` ≥7.0 — Тестирование (dev)
+- `ruff` ≥0.1.0 — Линтинг (dev)
+- `mypy` ≥1.0.0 — Проверка типов (dev)
 
 ### 4. Настройка .env
 

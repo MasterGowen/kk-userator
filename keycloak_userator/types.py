@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 types.py
 
@@ -11,7 +10,7 @@ types.py
 - Статистика операций
 """
 
-from typing import Any, Dict, TypedDict
+from typing import Any, TypedDict
 
 
 class UserData(TypedDict):
@@ -105,7 +104,7 @@ class NewUserDict(TypedDict):
     lastName: str
     enabled: bool
     emailVerified: bool
-    credentials: list[Dict[str, Any]]
+    credentials: list[dict[str, Any]]
 
 
 class CredentialDict(TypedDict):

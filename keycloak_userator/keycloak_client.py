@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 keycloak_client.py — Клиент для работы с Keycloak Admin API.
 """
 
 import logging
 import sys
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from keycloak import KeycloakAdmin
 from keycloak.exceptions import KeycloakError
@@ -24,7 +23,7 @@ class KeycloakUserGenerator:
         username: str,
         password: str,
         config: Config,
-        realm_name: Optional[str] = None,
+        realm_name: str | None = None,
         dry_run: bool = False
     ):
         self.server_url = server_url.rstrip('/')
@@ -33,8 +32,8 @@ class KeycloakUserGenerator:
         self.realm_name = realm_name or config.user.default_realm
         self.config = config
         self.dry_run = dry_run
-        self.keycloak_admin: Optional[KeycloakAdmin] = None
-        self.stats: Dict[str, int] = {
+        self.keycloak_admin: KeycloakAdmin | None = None
+        self.stats: dict[str, int] = {
             'created': 0, 'skipped': 0, 'errors': 0, 'total': 0
         }
 
@@ -90,15 +89,16 @@ class KeycloakUserGenerator:
             self.logger.error(f"Ошибка подключения к Keycloak: {e}")
             return False
 
-    def _get_or_create_group(self, group_name: str) -> Optional[str]:
+    def _get_or_create_group(self, group_name: str) -> str | None:
         try:
             assert self.keycloak_admin is not None, "KeycloakAdmin not initialized"  # nosec B101
             existing_groups = self.keycloak_admin.get_groups(query={"search": group_name})
 
             for group in existing_groups:
                 if group.get('name') == group_name:
-                    self.logger.info(f"Группа '{group_name}' уже существует (ID: {group.get('id')})")
-                    return group.get('id')
+                    group_id = group.get('id')
+                    self.logger.info(f"Группа '{group_name}' уже существует (ID: {group_id})")
+                    return group_id  # type: ignore[no-any-return]
 
             self.logger.info(f"Создание группы '{group_name}'")
             group_id = self.keycloak_admin.create_group({'name': group_name})
@@ -119,7 +119,7 @@ class KeycloakUserGenerator:
 
     def _create_user(
         self, username: str, password: str, email: str,
-        first_name: str, last_name: str, group_id: Optional[str] = None
+        first_name: str, last_name: str, group_id: str | None = None
     ) -> bool:
         try:
             if self._user_exists(username):
@@ -127,7 +127,7 @@ class KeycloakUserGenerator:
                 self.stats['skipped'] += 1
                 return True
 
-            new_user: Dict[str, Any] = {
+            new_user: dict[str, Any] = {
                 'username': username, 'email': email,
                 'firstName': first_name, 'lastName': last_name,
                 'enabled': True, 'emailVerified': False,
@@ -150,7 +150,7 @@ class KeycloakUserGenerator:
             self.stats['errors'] += 1
             return False
 
-    def _generate_user_data(self, number: int, password: str) -> Dict[str, Any]:
+    def _generate_user_data(self, number: int, password: str) -> dict[str, Any]:
         username = f"{self.config.user.login_prefix}_{number}"
         email = f"{self.config.user.login_prefix}_{number}@{self.config.user.email_domain}"
         last_name = self.config.user.last_name_template.format(number=number)
@@ -161,7 +161,7 @@ class KeycloakUserGenerator:
             'enabled': True, 'group': self.config.user.group_name
         }
 
-    def generate_users(self, count: int, start_number: int) -> List[Dict[str, Any]]:
+    def generate_users(self, count: int, start_number: int) -> list[dict[str, Any]]:
         self.stats['total'] = count
         created_users = []
         password_gen = PasswordGenerator(self.config)

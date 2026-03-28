@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 exporter.py
 
@@ -15,7 +14,7 @@ import csv
 import json
 import os
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 class CredentialExporter:
@@ -51,7 +50,7 @@ class CredentialExporter:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         return f"credentials_{timestamp}.{extension}"
 
-    def export_csv(self, users: List[Dict[str, Any]], filename: Optional[str] = None) -> str:
+    def export_csv(self, users: list[dict[str, Any]], filename: str | None = None) -> str:
         """
         Экспорт данных в CSV формат.
 
@@ -84,7 +83,7 @@ class CredentialExporter:
 
         return filepath
 
-    def export_txt(self, users: List[Dict[str, Any]], filename: Optional[str] = None) -> str:
+    def export_txt(self, users: list[dict[str, Any]], filename: str | None = None) -> str:
         """
         Экспорт данных в TXT формат (читаемый текстовый формат).
 
@@ -123,7 +122,7 @@ class CredentialExporter:
 
         return filepath
 
-    def export_json(self, users: List[Dict[str, Any]], filename: Optional[str] = None) -> str:
+    def export_json(self, users: list[dict[str, Any]], filename: str | None = None) -> str:
         """
         Экспорт данных в JSON формат (для машинной обработки).
 

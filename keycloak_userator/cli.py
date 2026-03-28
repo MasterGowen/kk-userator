@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 cli.py
 
@@ -11,15 +10,15 @@ cli.py
 - Запуск генератора пользователей
 """
 
+import argparse
 import os
 import sys
-import argparse
-from typing import Dict, Optional
+
 from dotenv import load_dotenv
 
-from keycloak_userator.config import Config, load_config, ConfigValidationError
-from keycloak_userator.keycloak_client import KeycloakUserGenerator
+from keycloak_userator.config import Config, ConfigValidationError, load_config
 from keycloak_userator.exporter import CredentialExporter
+from keycloak_userator.keycloak_client import KeycloakUserGenerator
 
 
 def create_argument_parser() -> argparse.ArgumentParser:
@@ -96,7 +95,7 @@ def create_argument_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def get_credentials_from_input(config: Config) -> Dict[str, str]:
+def get_credentials_from_input(config: Config) -> dict[str, str]:
     """
     Запрос учётных данных у пользователя через input().
 
@@ -138,7 +137,7 @@ def get_credentials_from_input(config: Config) -> Dict[str, str]:
     }
 
 
-def get_credentials_from_env(config: Config) -> Optional[Dict[str, str]]:
+def get_credentials_from_env(config: Config) -> dict[str, str] | None:
     """
     Получение учётных данных из переменных окружения.
 
@@ -238,7 +237,7 @@ def export_credentials(users: list, output_dir: str) -> None:
     print("   Обеспечьте безопасное хранение и передачу файлов.")
 
 
-def print_completion(stats: Dict[str, int]) -> None:
+def print_completion(stats: dict[str, int]) -> None:
     """
     Вывод сообщения о завершении работы.
 

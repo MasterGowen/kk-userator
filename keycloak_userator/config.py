@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 config.py
 
@@ -15,7 +14,6 @@ config.py
 import os
 import re
 from dataclasses import dataclass, field
-from typing import Optional
 from pathlib import Path
 
 try:
@@ -89,7 +87,7 @@ class Config:
     logging: LoggingConfig = field(default_factory=LoggingConfig)
 
     # Путь к файлу конфигурации
-    config_path: Optional[str] = None
+    config_path: str | None = None
 
 
 # =============================================================================
@@ -234,7 +232,7 @@ class ConfigLoader:
     - Валидацию параметров
     """
 
-    def __init__(self, config_path: Optional[str] = None):
+    def __init__(self, config_path: str | None = None):
         """
         Инициализация загрузчика.
 
@@ -290,7 +288,7 @@ class ConfigLoader:
         if not config_path.exists():
             return {}
 
-        with open(config_path, 'r', encoding='utf-8') as f:
+        with open(config_path, encoding='utf-8') as f:
             data = yaml.safe_load(f)
             return data if data else {}
 
@@ -383,7 +381,7 @@ class ConfigLoader:
 # УТИЛИТЫ
 # =============================================================================
 
-def load_config(config_path: Optional[str] = None) -> Config:
+def load_config(config_path: str | None = None) -> Config:
     """
     Загрузка конфигурации.
 
