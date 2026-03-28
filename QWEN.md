@@ -1,8 +1,8 @@
 # kk-userator — Контекст проекта
 
-**Дата:** 2026-03-22  
-**Версия:** 1.1.0 (с конфигурацией)  
-**Тип:** Python-скрипт для массового создания пользователей в Keycloak
+**Дата:** 2026-03-28
+**Версия:** 2.0.0 (рефакторинг в пакет)
+**Тип:** Python-пакет для массового создания пользователей в Keycloak
 
 ---
 
@@ -18,18 +18,23 @@
 - ✅ Экспорт в CSV, TXT, JSON
 - ✅ Логирование всех операций
 - ✅ Режим сухой проверки (`--dry-run`)
-- ✅ **Конфигурация через YAML-файл** (без жёстко зашитых констант)
-- ✅ **Валидация параметров** (префикс, домен, длина пароля)
-- ✅ Поддержка переменных окружения
+- ✅ Конфигурация через YAML-файл
+- ✅ Валидация параметров (префикс, домен, длина пароля)
+- ✅ Поддержка переменных окружения (`.env` файл)
+- ✅ **145 тестов, покрытие 93%+**
+- ✅ **Пакетная структура** (модули: cli, config, types, password, exporter, keycloak_client)
 
 ### Технологический стек
 
 | Компонент | Технология |
 |-----------|------------|
-| Язык | Python 3.8+ |
+| Язык | Python 3.12+ |
 | Keycloak API | python-keycloak ≥3.0.0 |
 | Переменные окружения | python-dotenv ≥1.0.0 |
 | YAML-конфигурация | PyYAML ≥6.0 |
+| Тестирование | pytest ≥7.0, pytest-cov, pytest-mock |
+| Типизация | mypy, types-PyYAML |
+| Линтинг | ruff |
 
 ---
 
@@ -41,8 +46,21 @@
 # Установка зависимостей
 pip install -r requirements.txt
 
+# Создание виртуального окружения (рекомендуется)
+python -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+# или
+.venv\Scripts\activate  # Windows
+
+# Копирование .env файла
+cp .env.example .env
+# Отредактируйте .env, указав ваши данные Keycloak
+
 # Интерактивный режим (скрипт запросит данные для подключения)
-python keycloak_user_generator.py
+python -m keycloak_userator.cli
+
+# Или с переменными окружения из .env
+python -m keycloak_userator.cli --no-interactive
 ```
 
 ### Конфигурация
@@ -68,7 +86,7 @@ python keycloak_user_generator.py
 ### Параметры командной строки
 
 ```bash
-python keycloak_user_generator.py [OPTIONS]
+python -m keycloak_userator.cli [OPTIONS]
 
 # Основные опции:
   --count, -n INT      Количество пользователей (из config.yaml: 200)
@@ -83,27 +101,24 @@ python keycloak_user_generator.py [OPTIONS]
 
 ```bash
 # Создать 50 пользователей (с 1 по 50)
-python keycloak_user_generator.py --count 50
+python -m keycloak_userator.cli --count 50
 
 # Создать пользователей с 101 по 200
-python keycloak_user_generator.py --count 100 --start 101
+python -m keycloak_userator.cli --count 100 --start 101
 
 # Режим сухой проверки
-python keycloak_user_generator.py --dry-run
+python -m keycloak_userator.cli --dry-run
 
-# Использование переменных окружения
-export KEYCLOAK_URL=https://keycloak.urfu.online
-export KEYCLOAK_USERNAME=admin
-export KEYCLOAK_PASSWORD=secret
-python keycloak_user_generator.py --no-interactive
+# Использование переменных окружения (из .env)
+python -m keycloak_userator.cli --no-interactive
 
 # Альтернативная конфигурация
-python keycloak_user_generator.py --config configs/another_course.yaml
+python -m keycloak_userator.cli --config configs/another_course.yaml
 
 # Переопределение параметров через env
 export KEYCLOAK_LOGIN_PREFIX=mycourse
 export KEYCLOAK_EMAIL_DOMAIN=example.com
-python keycloak_user_generator.py --no-interactive
+python -m keycloak_userator.cli --no-interactive
 ```
 
 ### Валидация конфигурации
@@ -124,17 +139,33 @@ python keycloak_user_generator.py --no-interactive
 
 ```
 kk-userator/
-├── keycloak_user_generator.py    # Основной скрипт (600+ строк)
-├── config.py                     # Модуль конфигурации и валидации
+├── keycloak_userator/            # Пакет (модули)
+│   ├── __init__.py               # Экспорт основных классов
+│   ├── cli.py                    # Точка входа, argparse
+│   ├── config.py                 # Конфигурация, валидация
+│   ├── types.py                  # TypedDict структуры
+│   ├── password.py               # Генератор паролей
+│   ├── exporter.py               # Экспорт в CSV/TXT/JSON
+│   └── keycloak_client.py        # Keycloak API клиент
+├── tests/                        # Тесты (pytest)
+│   ├── test_cli.py
+│   ├── test_config.py
+│   ├── test_password.py
+│   ├── test_exporter.py
+│   └── test_keycloak_client.py
+├── keycloak_user_generator.py    # Обёртка для обратной совместимости
 ├── config.yaml                   # Файл настроек (игнорируется git)
 ├── config.yaml.example           # Пример конфигурации
+├── .env                          # Переменные окружения (игнорируется git)
 ├── .env.example                  # Пример переменных окружения
 ├── requirements.txt              # Python-зависимости
 ├── README.md                     # Пользовательская документация
-├── QWEN.md                       # Этот файл — контекст для ИИ-агента
-├── AGENTS.md                     # Промпты субагентов (analyst, engineer, reviewer...)
-├── docs/
-│   └── requirements.md           # Техническое задание
+├── QWEN.md                       # Этот файл — контекст проекта
+├── AGENTS.md                     # Промпты субагентов
+├── docs/                         # Документация проекта
+│   ├── requirements.md
+│   ├── architecture.md
+│   └── activity.log              # Журнал активности
 ├── meta/                         # Документация системы агентов
 │   ├── README.md
 │   └── docs/
@@ -303,6 +334,7 @@ output/
 
 | Версия | Дата | Изменения |
 |--------|------|-----------|
+| **2.0.0** | 2026-03-28 | **Рефакторинг в пакет**: модульная структура (cli, config, types, password, exporter, keycloak_client), 145 тестов (покрытие 93%+), .env поддержка, ruff/mypy/bandit проверки |
 | 1.1.0 | 2026-03-22 | Конфигурация в YAML, валидация параметров, декомпозиция main() |
 | 1.0.0 | 2026-03-18 | Базовая версия: генерация 200 пользователей, экспорт CSV/TXT/JSON |
 
