@@ -104,12 +104,12 @@ class TestArgumentParser:
 
         assert args.output_dir == 'custom_output'
 
-    def test_parse_no_interactive_argument(self):
-        """Парсинг аргумента --no-interactive."""
+    def test_parse_interactive_argument(self):
+        """Парсинг аргумента --interactive."""
         parser = create_argument_parser()
-        args = parser.parse_args(['--no-interactive'])
+        args = parser.parse_args(['--interactive'])
 
-        assert args.no_interactive is True
+        assert args.interactive is True
 
     def test_parse_config_argument(self):
         """Парсинг аргумента --config."""
@@ -127,7 +127,7 @@ class TestArgumentParser:
         assert args.start is None
         assert args.dry_run is False
         assert args.output_dir is None
-        assert args.no_interactive is False
+        assert args.interactive is False
         assert args.config is None
 
 
@@ -394,7 +394,7 @@ class TestMain:
         mock_args.start = None
         mock_args.dry_run = True
         mock_args.output_dir = None
-        mock_args.no_interactive = False
+        mock_args.interactive = False
         mock_args.config = None
         mock_create_parser.return_value.parse_args = Mock(return_value=mock_args)
 

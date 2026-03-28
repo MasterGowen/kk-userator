@@ -54,11 +54,11 @@ KEYCLOAK_REALM=master
 ### 2.3. Первый запуск
 
 ```bash
-# Интерактивный режим (запросит данные)
+# Неинтерактивный режим (переменные окружения, по умолчанию)
 python -m keycloak_userator.cli
 
-# С переменными окружения из .env
-python -m keycloak_userator.cli --no-interactive
+# Интерактивный режим (запросит данные)
+python -m keycloak_userator.cli --interactive
 
 # Режим проверки (без создания)
 python -m keycloak_userator.cli --dry-run --count 5
@@ -163,13 +163,25 @@ Realm [master]:
 #### Режим с переменными окружения
 
 ```bash
-python -m keycloak_userator.cli --no-interactive
+python -m keycloak_userator.cli
 ```
 
 **Требует:**
 - `KEYCLOAK_URL` — установлен
 - `KEYCLOAK_USERNAME` — установлен
 - `KEYCLOAK_PASSWORD` — установлен
+
+#### Интерактивный режим
+
+```bash
+python -m keycloak_userator.cli --interactive
+```
+
+**Запросит:**
+- URL Keycloak
+- Имя пользователя администратора
+- Пароль
+- Realm (опционально)
 
 #### Режим проверки (dry-run)
 
@@ -194,7 +206,7 @@ python -m keycloak_userator.cli --dry-run --count 5
 | `--start` | `-s` | Начальный номер | `--start 101` |
 | `--dry-run` | | Режим проверки | `--dry-run` |
 | `--output-dir` | `-o` | Директория вывода | `-o output` |
-| `--no-interactive` | | Без запросов | `--no-interactive` |
+| `--interactive` | `-i` | Интерактивный режим | `--interactive` |
 | `--config` | `-c` | Путь к config.yaml | `-c custom.yaml` |
 | `--help` | `-h` | Справка | `--help` |
 

@@ -37,12 +37,12 @@ def create_argument_parser() -> argparse.ArgumentParser:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Примеры использования:
-  python -m keycloak_userator.cli                    # Интерактивный режим
+  python -m keycloak_userator.cli                    # Переменные окружения (по умолчанию)
+  python -m keycloak_userator.cli --interactive      # Интерактивный режим
   python -m keycloak_userator.cli --count 50         # 50 пользователей
   python -m keycloak_userator.cli --dry-run          # Режим проверки
-  python -m keycloak_userator.cli --no-interactive   # Переменные окружения
 
-Переменные окружения (опционально):
+Переменные окружения (обязательно для неинтерактивного режима):
   KEYCLOAK_URL         URL сервера Keycloak
   KEYCLOAK_USERNAME    Имя пользователя администратора
   KEYCLOAK_PASSWORD    Пароль администратора
@@ -81,9 +81,9 @@ def create_argument_parser() -> argparse.ArgumentParser:
     )
 
     parser.add_argument(
-        '--no-interactive',
+        '--interactive', '-i',
         action='store_true',
-        help='Не интерактивный режим (переменные окружения)'
+        help='Интерактивный режим (запрос учётных данных)'
     )
 
     parser.add_argument(
@@ -274,15 +274,20 @@ def main() -> int:
         f"группа={config.user.group_name}"
     )
 
-    if args.no_interactive:
-        credentials = get_credentials_from_env(config)
-        if not credentials:
+    credentials: dict[str, str]
+
+    if args.interactive:
+        credentials = get_credentials_from_input(config)
+        print("Введены данные для подключения")
+    else:
+        env_credentials = get_credentials_from_env(config)
+        if not env_credentials:
             print("Ошибка: переменные окружения не найдены")
             print("Установите KEYCLOAK_URL, KEYCLOAK_USERNAME, KEYCLOAK_PASSWORD")
+            print("Или используйте --interactive для интерактивного ввода")
             return 1
+        credentials = env_credentials
         print("Использованы переменные окружения для подключения")
-    else:
-        credentials = get_credentials_from_input(config)
 
     generator = KeycloakUserGenerator(
         server_url=credentials['server_url'],

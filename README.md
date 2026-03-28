@@ -155,11 +155,11 @@ logging:
 ### Базовый запуск
 
 ```bash
-# Интерактивный режим (запросит данные для подключения)
+# Неинтерактивный режим (переменные окружения, по умолчанию)
 python -m keycloak_userator.cli
 
-# С переменными окружения из .env
-python -m keycloak_userator.cli --no-interactive
+# Интерактивный режим (запросит данные для подключения)
+python -m keycloak_userator.cli --interactive
 ```
 
 ### Параметры командной строки
@@ -172,7 +172,7 @@ Options:
   --start, -s INTEGER     Начальный номер (по умолчанию: 1)
   --dry-run               Режим проверки (без создания)
   --output-dir, -o PATH   Директория для файлов
-  --no-interactive        Использовать переменные окружения
+  --interactive, -i       Интерактивный режим (запрос данных)
   --config, -c PATH       Путь к config.yaml
   --help                  Показать справку
 ```
@@ -189,8 +189,8 @@ python -m keycloak_userator.cli --count 100 --start 101
 # Режим проверки (dry-run)
 python -m keycloak_userator.cli --dry-run --count 10
 
-# С переменными окружения
-python -m keycloak_userator.cli --no-interactive
+# Интерактивный режим
+python -m keycloak_userator.cli --interactive
 
 # Альтернативная конфигурация
 python -m keycloak_userator.cli --config configs/another_project.yaml

@@ -54,10 +54,10 @@ cp .env.example .env
 # Отредактируйте .env, указав ваши данные Keycloak
 
 # Интерактивный режим (скрипт запросит данные для подключения)
-python -m keycloak_userator.cli
+python -m keycloak_userator.cli --interactive
 
-# Или с переменными окружения из .env
-python -m keycloak_userator.cli --no-interactive
+# Или с переменными окружения из .env (по умолчанию)
+python -m keycloak_userator.cli
 ```
 
 ### Конфигурация
@@ -90,7 +90,7 @@ python -m keycloak_userator.cli [OPTIONS]
   --start, -s INT      Начальный номер нумерации (из config.yaml: 1)
   --dry-run            Режим проверки без реального создания
   --output-dir, -o STR Директория для файлов (из config.yaml: output)
-  --no-interactive     Использовать переменные окружения
+  --interactive, -i    Интерактивный режим (запрос данных)
   --config STR         Путь к файлу конфигурации (config.yaml)
 ```
 
@@ -106,8 +106,8 @@ python -m keycloak_userator.cli --count 100 --start 101
 # Режим сухой проверки
 python -m keycloak_userator.cli --dry-run
 
-# Использование переменных окружения (из .env)
-python -m keycloak_userator.cli --no-interactive
+# Интерактивный режим
+python -m keycloak_userator.cli --interactive
 
 # Альтернативная конфигурация
 python -m keycloak_userator.cli --config configs/another_course.yaml
@@ -115,7 +115,7 @@ python -m keycloak_userator.cli --config configs/another_course.yaml
 # Переопределение параметров через env
 export KEYCLOAK_LOGIN_PREFIX=mycourse
 export KEYCLOAK_EMAIL_DOMAIN=example.com
-python -m keycloak_userator.cli --no-interactive
+python -m keycloak_userator.cli
 ```
 
 ### Валидация конфигурации
